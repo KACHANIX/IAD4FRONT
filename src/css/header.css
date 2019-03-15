@@ -1,0 +1,26 @@
+#header {
+    padding: 0;
+    min-width: 500px;
+    height: 70px;
+    width: 100%;
+    color: #000000;
+    font-size: 20px;
+    background-color: #1E90FF;
+    border-radius: 0 0 40px 40px;
+}
+
+#header > #header-text {
+    color: white;
+    margin-left: 30px;
+    float: left;
+}
+
+#header > #header-image {
+    float: right;
+    margin-right: 30px;
+}
+
+#VT-img {
+    height: 65px;
+    width: 70px;
+}
