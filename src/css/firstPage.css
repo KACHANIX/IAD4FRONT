@@ -1,32 +1,240 @@
-body{
-    min-width: 500px;
+/*1058,     832,      832*/
+
+@media screen and (min-width: 1058px) {
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    html,body,#container{
+        height: 100%;
+    }
+
+    body {
+        background-color: grey;
+    }
+    a {
+        color: #1E90FF;
+    }
+
+    .form {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 300px;
+        height: 170px;
+        border: 2px solid #1E90FF;
+        text-align: center;
+    }
+
+    .form > input[type='submit'] {
+        margin-top: 10px;
+    }
+
+    #tablet {
+        display: none
+    }
+
+    #mobile {
+        display: none
+    }
+
+    #pc {
+        width: 20px;
+        margin: 5px auto;
+        color: #1E90FF;
+    }
+
+    #suLinkStyle {
+        float:right;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #1E90FF;
+        width: 72px;
+        height: 75%;
+    }
+
+    #liLinkStyle {
+        float: left;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #1E90FF;
+        width: 64px;
+        height: 75%;
+    }
+
+    #divStyle {
+        /*margin-top: 20px;*/
+        padding-top: 90px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 170px;
+        height: 30px;
+        fontSize: 20px;
+        fontWeight: 'bold';
+    }
+    #root{
+        height: 100%;
+    }
+    #container{
+        height: 100%;
+        margin: 0 120px;
+        background-color: white;
+    }
+
+    #error{
+        color: red;
+        visibility: hidden;
+    }
 }
 
-a {
-    color: #1E90FF;
+@media screen and (min-width: 832px) and (max-width: 1057px) {
+
+
+    a {
+        color: #1E90FF;
+    }
+
+    .form {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 600px;
+        height: 170px;
+        border: 2px solid #1E90FF;
+        border-radius: 30px;
+        text-align:  center;
+    }
+
+
+    .form > input[type='submit'] {
+        margin-top: 10px;
+    }
+
+
+    #tablet {
+        width: 70px;
+        margin: 5px auto;
+        color: #1E90FF;
+    }
+
+    #mobile {
+        display: none
+    }
+
+    #pc {
+        display: none
+    }
+
+    #suLinkStyle {
+        float:right;
+        margin-right: 20px;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #1E90FF;
+        border-radius: 20px;
+        width: 72px;
+        height: 75%;
+    }
+
+    #liLinkStyle {
+        float: left;
+        margin-left: 20px;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #1E90FF;
+        width: 64px;
+        height: 75%;
+        border-radius: 20px;
+
+    }
+
+    #divStyle {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 600px;
+        height: 30px;
+        fontSize: 20px;
+        fontWeight: 'bold';
+    }
+
+    #error{
+        color: red;
+        visibility: hidden;
+    }
 }
 
-.form{
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
-    height: 170px;
-    border: 2px solid #1E90FF;
-}
-.form > input:not([type='submit']){
-    margin-left: 28%;
-}
+@media screen and (max-width: 831px) {
 
-.form > label{
-    margin-left: 40%;
-}
+    body {
+        min-width: 500px;
+    }
 
-.form > input[type='submit'] {
-    margin-top: 10px;
-    margin-left: 43%;
-}
+    a {
+        /*color: #1E90FF;*/
+        color: #ff3a47;
+    }
 
-#reglabel{
-    margin-left: 32%;
+    .form {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        height: 170px;
+        border-radius: 30px;
+        border: 2px solid #ff3a47;
+        text-align:  center;
+    }
+
+    .form > input[type='submit'] {
+        margin-top: 10px;
+    }
+
+    #tablet {
+        display: none
+    }
+
+    #mobile {
+        width: 70px;
+        margin: 5px auto;
+        color: #ff3a47;
+    }
+
+    #pc {
+        display: none
+    }
+
+    #divStyle {
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+        height: 30px;
+        fontSize: 20px;
+        fontWeight: 'bold';
+    }
+    #suLinkStyle {
+        float:right;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #ff3a47;
+        width: 72px;
+        height: 75%;
+        border-radius: 20px;
+    }
+
+    #liLinkStyle {
+        float: left;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid #ff3a47;
+        width: 64px;
+        height: 75%;
+        border-radius: 20px;
+    }
+
+    #error{
+        color: red;
+        visibility: hidden;
+    }
 }

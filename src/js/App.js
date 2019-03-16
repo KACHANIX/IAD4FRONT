@@ -3,47 +3,36 @@ import Header from './Header';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import firstPage from '../css/firstPage.css'
 
-var divStyle = {
-    marginTop: 20,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: 170,
-    height: 30,
-    fontSize: 20,
-    fontWeight: 'bold'
-}
-var liLinkStyle = {
-    textDecoration: 'none',
-    border: '2px solid #1E90FF',
-    width: 64,
-    height: 30
-}
-var suLinkStyle = {
-    marginLeft: 15,
-    textDecoration: 'none',
-    border: '2px solid #1E90FF',
-    width: 72,
-    height: 30
-}
+document.cookie = "name=; path=/;"
 
+var style = {
+    height: '100%',
+    margin: 0
+}
 
 class App extends Component {
     render() {
         return (
-            <div>
+            <div style={style}>
                 <Header/>
-                <Router>
-                    <div>
-                        <nav>
-                            <div style={divStyle}>
-                                <Link style={liLinkStyle} to='/login'>LOG IN</Link>
-                                <Link style={suLinkStyle} suLinkStyle to='/signup'>SIGN UP</Link>
-                            </div>
-                        </nav>
-                        <Route path="/login" component={logIn}/>
-                        <Route path="/signup" component={signUp}/>
-                    </div>
-                </Router>
+                <div id="container">
+                    <Router>
+                        <div>
+                            <nav>
+                                <div id="divStyle">
+                                    <Link id="liLinkStyle" to='/login'>LOG IN</Link>
+                                    <Link id="suLinkStyle" to='/signup'>SIGN UP</Link>
+                                </div>
+                            </nav>
+                            <Route path="/login" component={logIn}/>
+                            <Route path="/signup" component={signUp}/>
+                        </div>
+                    </Router>
+
+                    <h3 id="pc">PC</h3>
+                    <h3 id="tablet">TABLET</h3>
+                    <h3 id="mobile">MOBILE</h3>
+                </div>
             </div>
         );
     }
@@ -54,18 +43,24 @@ class LogInForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const url = "http://localhost:8080/check_user";
-        const data = JSON.stringify({ "username" : this.state.name, "password" : this.state.password });
+        const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
-                alert(json);
+                var response =  xhr.responseText;
+                if (response === 'true') {
+                    alert(response);
+                    document.cookie = "name=" + response + "; path=/";
+                    window.location.replace("http://localhost:3000/asd.html");
+                }
+                else {
+                    document.getElementById('error').style="visibility:visible;";
+                }
             }
         };
         xhr.send(data);
-
     }
 
     constructor(props) {
@@ -94,7 +89,8 @@ class LogInForm extends Component {
                     <input type="text" value={this.state.name} onChange={this.onNameChange}/> <br/> <br/>
                     <label>PASSWORD</label><br/>
                     <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
-                    <input type="submit" value="Log In"/>
+                    <input type="submit" value="Log In"/><br/>
+                    <label id="error">Wrong login or password!</label>
                 </form>
             </div>
         );
@@ -105,7 +101,7 @@ class SignUpForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const url = "http://localhost:8080/add_user";
-        const data = JSON.stringify({ "username" : this.state.name, "password" : this.state.password });
+        const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
@@ -145,7 +141,9 @@ class SignUpForm extends Component {
                     <input type="text" value={this.state.name} onChange={this.onNameChange}/> <br/> <br/>
                     <label id="reglabel">CHOOSE PASSWORD</label><br/>
                     <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
-                    <input type="submit" value="Register"/>
+                    <input type="submit" value="Register"/><br/>
+                    <label id="error">Wrong login or password!</label>
+
                 </form>
             </div>
         );
@@ -163,6 +161,5 @@ function logIn() {
         <LogInForm/>
     )
 }
-
 
 export default App;

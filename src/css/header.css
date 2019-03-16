@@ -1,26 +1,101 @@
-#header {
-    padding: 0;
-    min-width: 500px;
-    height: 70px;
-    width: 100%;
-    color: #000000;
-    font-size: 20px;
-    background-color: #1E90FF;
-    border-radius: 0 0 40px 40px;
+/*1058,     832,      832*/
+
+@media screen and (min-width: 1058px) {
+
+    #header {
+        padding: 0;
+        min-width: 500px;
+        height: 70px;
+        width: 100%;
+        color: #000000;
+        font-size: 20px;
+        background-color: #1E90FF;
+        margin-bottom : -70px;
+        position: fixed;
+        z-index: 20;
+    }
+
+    #header > #header-text {
+        color: white;
+        margin-left: 30px;
+        float: left;
+    }
+
+    #header > #header-image {
+        float: right;
+        margin-right: 30px;
+        height: 100%;
+    }
+
+    #VT-img {
+        height: 65px;
+        /*height: 100%;*/
+
+        width: 70px;
+    }
 }
 
-#header > #header-text {
-    color: white;
-    margin-left: 30px;
-    float: left;
+@media screen and (min-width: 832px) and (max-width: 1057px) {
+
+    #header {
+        padding: 0;
+        min-width: 500px;
+        height: 70px;
+        width: 100%;
+        color: #000000;
+        font-size: 20px;
+        background-color: #1E90FF;
+        border-radius: 0 0 40px 40px;
+    }
+
+    #header > #header-text {
+        color: white;
+        margin-left: 30px;
+        float: left;
+    }
+
+    #header > #header-image {
+        float: right;
+        margin-right: 30px;
+    }
+
+    #VT-img {
+        height: 65px;
+        width: 70px;
+    }
 }
 
-#header > #header-image {
-    float: right;
-    margin-right: 30px;
-}
+@media screen and (max-width: 831px) {
 
-#VT-img {
-    height: 65px;
-    width: 70px;
+    #header {
+        padding: 0;
+        min-width: 500px;
+        height: 70px;
+        width: 100%;
+        color: #000000;
+        font-size: 20px;
+        background-color: #ff3a47;
+        border-radius: 0 0 40px 40px;
+        text-align: center;
+    }
+
+    #header > #header-text {
+        width: 370px;
+        height: 60px;
+        color: white;
+        margin-left: auto;
+        margin-right: auto;
+        /*float: left;*/
+    }
+
+    #header > #header-image {
+        float: right;
+        margin-right: 30px;
+    }
+
+    #VT-img {
+        display: none;
+        height: 65px;
+        width: 70px;
+    }
 }
