@@ -42,6 +42,11 @@ class App extends Component {
 class LogInForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
+
+        if (this.state.name == "" || this.state.name == null ||
+            this.state.password == "" || this.state.password == null){
+            return;
+        }
         const url = "http://localhost:8080/check_user";
         const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
         var xhr = new XMLHttpRequest();
@@ -56,7 +61,7 @@ class LogInForm extends Component {
                     window.location.replace("http://localhost:3000/asd.html");
                 }
                 else {
-                    document.getElementById('error').style="visibility:visible;";
+                    document.getElementById('errorWrong').style="display: inline";
                 }
             }
         };
@@ -90,7 +95,8 @@ class LogInForm extends Component {
                     <label>PASSWORD</label><br/>
                     <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
                     <input type="submit" value="Log In"/><br/>
-                    <label id="error">Wrong login or password!</label>
+                    <label id="errorWrong">Wrong login or password!</label>
+                    <label id="errorExists">User with this username already exists!</label>
                 </form>
             </div>
         );
@@ -100,6 +106,12 @@ class LogInForm extends Component {
 class SignUpForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
+
+        if (this.state.name == "" || this.state.name == null ||
+            this.state.password == "" || this.state.password == null){
+            return;
+        }
+
         const url = "http://localhost:8080/add_user";
         const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
         var xhr = new XMLHttpRequest();
@@ -107,8 +119,15 @@ class SignUpForm extends Component {
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
-                alert(json);
+                var response =  xhr.responseText;
+                if (response === 'true') {
+                    alert(response);
+                    document.cookie = "name=" + response + "; path=/";
+                    window.location.replace("http://localhost:3000/asd.html");
+                }
+                else {
+                    document.getElementById('errorExists').style="display: inline";
+                }
             }
         };
         xhr.send(data);
@@ -142,8 +161,8 @@ class SignUpForm extends Component {
                     <label id="reglabel">CHOOSE PASSWORD</label><br/>
                     <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
                     <input type="submit" value="Register"/><br/>
-                    <label id="error">Wrong login or password!</label>
-
+                    <label id="errorWrong">Wrong login or password!</label>
+                    <label id="errorExists">User with this username already exists!</label>
                 </form>
             </div>
         );

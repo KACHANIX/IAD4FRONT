@@ -5,13 +5,15 @@
         margin: 0;
         padding: 0;
     }
-    html,body,#container{
+
+    html, body, #container {
         height: 100%;
     }
 
     body {
         background-color: grey;
     }
+
     a {
         color: #1E90FF;
     }
@@ -45,7 +47,7 @@
     }
 
     #suLinkStyle {
-        float:right;
+        float: right;
         text-decoration: none;
         text-align: center;
         border: 2px solid #1E90FF;
@@ -72,19 +74,27 @@
         fontSize: 20px;
         fontWeight: 'bold';
     }
-    #root{
+
+    #root {
         height: 100%;
     }
-    #container{
+
+    #container {
         height: 100%;
         margin: 0 120px;
         background-color: white;
     }
 
-    #error{
+    #errorWrong {
         color: red;
-        visibility: hidden;
+        display: none;
     }
+
+    #errorExists {
+        color: red;
+        display: none;
+    }
+
 }
 
 @media screen and (min-width: 832px) and (max-width: 1057px) {
@@ -102,7 +112,7 @@
         height: 170px;
         border: 2px solid #1E90FF;
         border-radius: 30px;
-        text-align:  center;
+        text-align: center;
     }
 
 
@@ -126,7 +136,7 @@
     }
 
     #suLinkStyle {
-        float:right;
+        float: right;
         margin-right: 20px;
         text-decoration: none;
         text-align: center;
@@ -158,9 +168,14 @@
         fontWeight: 'bold';
     }
 
-    #error{
+    #errorWrong {
         color: red;
-        visibility: hidden;
+        display: none;
+    }
+
+    #errorExists {
+        color: red;
+        display: none;
     }
 }
 
@@ -183,7 +198,7 @@
         height: 170px;
         border-radius: 30px;
         border: 2px solid #ff3a47;
-        text-align:  center;
+        text-align: center;
     }
 
     .form > input[type='submit'] {
@@ -213,8 +228,9 @@
         fontSize: 20px;
         fontWeight: 'bold';
     }
+
     #suLinkStyle {
-        float:right;
+        float: right;
         text-decoration: none;
         text-align: center;
         border: 2px solid #ff3a47;
@@ -233,8 +249,13 @@
         border-radius: 20px;
     }
 
-    #error{
+    #errorWrong {
         color: red;
-        visibility: hidden;
+        display: none;
+    }
+
+    #errorExists {
+        color: red;
+        display: none;
     }
 }
