@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Header from './Header';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import firstPage from '../css/firstPage.css'
-
-document.cookie = "name=; path=/;"
+//
+document.cookie = "nameandpass=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
 
 var style = {
     height: '100%',
@@ -43,22 +43,26 @@ class LogInForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        if (this.state.name == "" || this.state.name == null ||
-            this.state.password == "" || this.state.password == null){
+
+        var username = this.state.name;
+        var password = this.state.password;
+
+        if (username == "" || username == null ||
+            password == "" || password == null){
             return;
         }
         const url = "http://localhost:8080/check_user";
-        const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
+        const data = JSON.stringify({"username": username, "password": password});
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
+        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response =  xhr.responseText;
                 if (response === 'true') {
-                    alert(response);
-                    document.cookie = "name=" + response + "; path=/";
-                    window.location.replace("http://localhost:3000/asd.html");
+                    // alert("name=" + username + "&&" + password + "; path=/");
+                    document.cookie = "nameandpass=" + username + "▲▲" + password + "; path=/";
+                    // window.location.replace("http://localhost:3000/asd.html");
                 }
                 else {
                     document.getElementById('errorWrong').style="display: inline";
@@ -107,13 +111,16 @@ class SignUpForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        if (this.state.name == "" || this.state.name == null ||
-            this.state.password == "" || this.state.password == null){
+        var username = this.state.name;
+        var password = this.state.password;
+
+        if (username == "" || username == null ||
+            password == "" || password == null){
             return;
         }
 
         const url = "http://localhost:8080/add_user";
-        const data = JSON.stringify({"username": this.state.name, "password": this.state.password});
+        const data = JSON.stringify({"username": username, "password": password});
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
@@ -121,9 +128,8 @@ class SignUpForm extends Component {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response =  xhr.responseText;
                 if (response === 'true') {
-                    alert(response);
-                    document.cookie = "name=" + response + "; path=/";
-                    window.location.replace("http://localhost:3000/asd.html");
+                    document.cookie = "nameandpass=" + username + "▲▲" + password + "; path=/";
+                    // window.location.replace("http://localhost:3000/asd.html");
                 }
                 else {
                     document.getElementById('errorExists').style="display: inline";
