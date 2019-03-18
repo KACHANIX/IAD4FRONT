@@ -2,178 +2,184 @@ import React, {Component} from 'react';
 import Header from './Header';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import firstPage from '../css/firstPage.css'
-//
-document.cookie = "nameandpass=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+import LogInForm from './logInForm.js';
+import SignUpForm from './signUpForm.js';
+
+import {Button} from 'primereact/button';
+import {Spinner} from 'primereact/spinner';
+import {ToggleButton} from 'primereact/togglebutton';
+
+
+
+var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+));
+var a = matches ? decodeURIComponent(matches[1]) : undefined;
+
+
+if ((a === "" || a === undefined) && window.location != "http://localhost:3000/enter") {
+    window.location.replace("http://localhost:3000/enter");
+}
+else if ((a === "" || a === undefined) && window.location == "http://localhost:3000/enter") {
+}
+else if (window.location == "http://localhost:3000/") {
+    var index = a.indexOf("▲▲");
+    var username = a.substr(0, index);
+    var password = a.substr(index + 2);
+
+
+    const url = "http://localhost:8080/check_user";
+    const data = JSON.stringify({"username": username, "password": password});
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = xhr.responseText;
+            if (response !== 'true') {
+                window.location.replace("http://localhost:3000/enter");
+            } else {
+                window.location.replace("http://localhost:3000/main");
+            }
+        }
+    };
+    xhr.send(data);
+}
+else if (window.location == "http://localhost:3000/main") {
+    var index = a.indexOf("▲▲");
+    var username = a.substr(0, index);
+    var password = a.substr(index + 2);
+
+
+    const url = "http://localhost:8080/check_user";
+    const data = JSON.stringify({"username": username, "password": password});
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = xhr.responseText;
+            if (response !== 'true') {
+                window.location.replace("http://localhost:3000/enter");
+            }
+        }
+        ;
+        xhr.send(data);
+    }
+}
+
+
+// document.cookie = "nameandpass=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
 
 var style = {
     height: '100%',
     margin: 0
 }
 
+class All extends Component {
+    render() {
+        return (
+            <div style={style}>
+                {/*<div id="container">*/}
+                    <Router>
+                        <div>
+                            <div id="divStyle">
+                                <Link id="liLinkStyle" to='/enter/login'>LOG IN</Link>
+                                <Link id="suLinkStyle" to='/enter/signup'>SIGN UP</Link>
+                            </div>
+                            <Route path="/enter/login" component={logIn}/>
+                            <Route path="/enter/signup" component={signUp}/>
+                        </div>
+                    </Router>
+
+                {/*</div>*/}
+
+
+                <h3 id="pc">PC</h3>
+                <h3 id="tablet">TABLET</h3>
+                <h3 id="mobile">MOBILE</h3>
+            </div>
+        );
+    }
+}
+
+var margin = {
+    paddingTop: 200,
+}
+
+class Main extends Component {
+    handleLogOut(e) {
+        e.preventDefault();
+        document.cookie = "nameandpass=; path=/";
+        window.location.replace("http://localhost:3000/main");
+
+    }
+    xClick(e){
+        alert("huy");
+        e.preventDefault();
+    }
+
+    constructor(props) {
+        super(props);
+        this.handleLogOut = this.handleLogOut.bind(this);
+        this.xClick = this.xClick.bind(this)
+        this.state = {x: "", y: "1",r : ""};
+    }
+
+    render() {
+        return (
+            <div>
+                <form id="mainform">
+                    <div id="buttonblockX">
+                        <Button label="-2"/>
+                        <Button label="-1.5"/>
+                        <Button label="-1"/>
+                        <Button label="-0.5"/>
+                        <Button label="0"/>
+                        <Button label="0.5"/>
+                        <Button label="1"/>
+                        <Button label="1.5"/>
+                        <Button label="2"/>
+                    </div>
+                    <div id="spinnerBlock">
+                        <Spinner value={this.state.y}  onChange={(e) => this.setState({y: e.value})} min={-5} max={3} step={0.1}/>
+                    </div>
+                    <div id="buttonblockR">
+                        <ToggleButton/>
+                    </div>
+                </form>
+                <form id="logout" onSubmit={this.handleLogOut}>
+                    <input type="submit" value="Log Out"/>
+                </form>
+
+
+                <h3 id="pc">PC</h3>
+                <h3 id="tablet">TABLET</h3>
+                <h3 id="mobile">MOBILE</h3>
+            </div>
+        );
+    }
+}
+
 class App extends Component {
     render() {
         return (
             <div style={style}>
-                <Header/>
+
+                <Header />
                 <div id="container">
                     <Router>
-                        <div>
-                            <nav>
-                                <div id="divStyle">
-                                    <Link id="liLinkStyle" to='/login'>LOG IN</Link>
-                                    <Link id="suLinkStyle" to='/signup'>SIGN UP</Link>
-                                </div>
-                            </nav>
-                            <Route path="/login" component={logIn}/>
-                            <Route path="/signup" component={signUp}/>
+                        <div style={style}>
+                            <Route path="/enter" component={All}/>
+                            <Route path="/main" component={Main}/>
                         </div>
                     </Router>
-
-                    <h3 id="pc">PC</h3>
-                    <h3 id="tablet">TABLET</h3>
-                    <h3 id="mobile">MOBILE</h3>
                 </div>
             </div>
         );
     }
 }
 
-
-class LogInForm extends Component {
-    handleSubmit(e) {
-        e.preventDefault();
-
-
-        var username = this.state.name;
-        var password = this.state.password;
-
-        if (username == "" || username == null ||
-            password == "" || password == null){
-            return;
-        }
-        const url = "http://localhost:8080/check_user";
-        const data = JSON.stringify({"username": username, "password": password});
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var response =  xhr.responseText;
-                if (response === 'true') {
-                    // alert("name=" + username + "&&" + password + "; path=/");
-                    document.cookie = "nameandpass=" + username + "▲▲" + password + "; path=/";
-                    // window.location.replace("http://localhost:3000/asd.html");
-                }
-                else {
-                    document.getElementById('errorWrong').style="display: inline";
-                }
-            }
-        };
-        xhr.send(data);
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {name: "", password: ""};
-        this.onNameChange = this.onNameChange.bind(this);
-        this.onPassChange = this.onPassChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    onNameChange(event) {
-        var val = event.target.value;
-        this.setState({name: val});
-    }
-
-    onPassChange(event) {
-        var val = event.target.value;
-        this.setState({password: val});
-    }
-
-    render() {
-        return (
-            <div>
-                <form class="form" onSubmit={this.handleSubmit}>
-                    <label>USERNAME</label><br/>
-                    <input type="text" value={this.state.name} onChange={this.onNameChange}/> <br/> <br/>
-                    <label>PASSWORD</label><br/>
-                    <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
-                    <input type="submit" value="Log In"/><br/>
-                    <label id="errorWrong">Wrong login or password!</label>
-                    <label id="errorExists">User with this username already exists!</label>
-                </form>
-            </div>
-        );
-    }
-}
-
-class SignUpForm extends Component {
-    handleSubmit(e) {
-        e.preventDefault();
-
-        var username = this.state.name;
-        var password = this.state.password;
-
-        if (username == "" || username == null ||
-            password == "" || password == null){
-            return;
-        }
-
-        const url = "http://localhost:8080/add_user";
-        const data = JSON.stringify({"username": username, "password": password});
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var response =  xhr.responseText;
-                if (response === 'true') {
-                    document.cookie = "nameandpass=" + username + "▲▲" + password + "; path=/";
-                    // window.location.replace("http://localhost:3000/asd.html");
-                }
-                else {
-                    document.getElementById('errorExists').style="display: inline";
-                }
-            }
-        };
-        xhr.send(data);
-
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {name: "", password: ""};
-        this.onNameChange = this.onNameChange.bind(this);
-        this.onPassChange = this.onPassChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    onNameChange(event) {
-        var val = event.target.value;
-        this.setState({name: val});
-    }
-
-    onPassChange(event) {
-        var val = event.target.value;
-        this.setState({password: val});
-    }
-
-    render() {
-        return (
-            <div>
-                <form class="form" onSubmit={this.handleSubmit}>
-                    <label id="reglabel">CHOOSE USERNAME</label><br/>
-                    <input type="text" value={this.state.name} onChange={this.onNameChange}/> <br/> <br/>
-                    <label id="reglabel">CHOOSE PASSWORD</label><br/>
-                    <input type="password" value={this.state.password} onChange={this.onPassChange}/> <br/>
-                    <input type="submit" value="Register"/><br/>
-                    <label id="errorWrong">Wrong login or password!</label>
-                    <label id="errorExists">User with this username already exists!</label>
-                </form>
-            </div>
-        );
-    }
-}
 
 function signUp() {
     return (

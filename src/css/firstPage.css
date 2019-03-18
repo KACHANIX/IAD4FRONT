@@ -95,6 +95,9 @@
         display: none;
     }
 
+    #mainform{
+        padding-top: 150px;
+    }
 }
 
 @media screen and (min-width: 832px) and (max-width: 1057px) {
