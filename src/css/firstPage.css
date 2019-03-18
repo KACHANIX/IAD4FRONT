@@ -98,6 +98,13 @@
     #mainform{
         padding-top: 150px;
     }
+
+    .xbtn {
+        height: 30px;
+        margin-top: 25px;
+        margin-left: 16px;
+        border: 2px solid red;
+    }
 }
 
 @media screen and (min-width: 832px) and (max-width: 1057px) {
@@ -180,6 +187,12 @@
         color: red;
         display: none;
     }
+    .xbtn {
+        height: 30px;
+        margin-top: 25px;
+        margin-left: 16px;
+        border: 2px solid red;
+    }
 }
 
 @media screen and (max-width: 831px) {
@@ -261,4 +274,37 @@
         color: red;
         display: none;
     }
+
+    #mainform{
+        margin: 20px auto;
+        height: 260px;
+        width: 80%;
+        border: 2px solid red;
+        border-radius: 20px;
+        text-align: center;
+
+    }
+    .xbtn{
+        margin:0 5px;
+    }
+    .rbtn{
+        margin:0 10px;
+    }
+    #buttonblockX{
+        margin: 10px auto;
+        width: 100%;
+    }
+    #spinnerBlock{
+
+    }
+    #buttonblockR{
+
+    }
+    p{
+        margin: 5px auto;
+    }
+    canvas{
+        border: 2px solid red
+    }
+
 }
