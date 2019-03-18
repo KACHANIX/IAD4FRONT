@@ -405,18 +405,21 @@ function drawArea(R, ctx, canv) {
     ctx.save();
     ctx.beginPath()
     ctx.moveTo(canv.width / 2, canv.height / 2);                                 ////////////// -1
-    ctx.arc(canv.width / 2, canv.height / 2 - 1, R * 20, Math.PI, Math.PI * 3 / 2, false);
+    // ctx.arc(canv.width / 2, canv.height / 2 - 1, R * 20, Math.PI, Math.PI * 3 / 2, false);
+    ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 20, 0, Math.PI  / 2, false);
+
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#3399FF";
     ctx.fillStyle = "#000";
     ctx.strokeRect(0, 0, 300, 300);
     ctx.fillStyle = "#3399FF";
-    ctx.fillRect(150 + 1, 150 - (R / 2) * 20 - 1, R * 20, (R / 2) * 20); ///////// +1
+    // ctx.fillRect(150 + 1, 150 - (R / 2) * 20 - 1, R * 20, (R / 2) * 20); ///////// +1
+    ctx.fillRect(150 + 1 - R / 2 * 20, 150 - (R) * 20 - 1, R / 2 * 20, (R) * 20); ///////// +1
     ctx.beginPath();
     ctx.moveTo(150, 150);
     ctx.lineTo(150, 150 + 2.5 + R * 20);
-    ctx.lineTo(151 + (R / 2) * 20, 150);
+    ctx.lineTo(151 - (R / 2) * 20, 150);
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#000";
