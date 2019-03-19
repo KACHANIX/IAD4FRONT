@@ -5,9 +5,7 @@ import styles from '../css/firstPage.css'
 import LogInForm from './logInForm.js';
 import SignUpForm from './signUpForm.js';
 import '../js/chart';
-import {$, jQuery} from 'jquery';
-import MaterialTable from 'material-table';
-
+import DataTable from 'react-data-table-component';
 
 
 //redirecting
@@ -84,6 +82,7 @@ if ((a === "" || a === undefined) && window.location != "http://localhost:3000/e
     xhr.send(data);
 }
 
+
 function clearxBorder() {
     var elements = document.getElementsByClassName("xbtn");
     for (index = 0; index < elements.length; index++) {
@@ -145,15 +144,53 @@ var margin = {
     paddingTop: 200,
 }
 
-function httpGet(theUrl)
-{
+function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false );
-    xmlHttp.send( null );
+    xmlHttp.open("GET", theUrl, false);
+    xmlHttp.send(null);
     return xmlHttp.responseText;
 }
-var dataForTable;
 
+var dataForTable;
+var hitList = [];
+const columns = [
+    {
+        name: 'X',
+        selector: 'x',
+        sortable: true,
+        width: '80px'
+    },
+    {
+        name: 'Y',
+        selector: 'y',
+        sortable: true,
+        width: '80px'
+    },
+    {
+        name: 'R',
+        selector: 'r',
+        sortable: true,
+
+        width: '80px'
+    },
+    {
+        name: 'Is In Area',
+        selector: 'isInArea',
+        sortable: false,
+        width: '80px'
+    },
+    {
+        name: 'Hit Time',
+        selector: 'hitTime',
+        sortable: false,
+        width: '180px'
+    },
+];
+const mySweetTheme = {
+    rows: {
+        height: '30px',
+    }
+};
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -169,7 +206,6 @@ class Main extends Component {
         var resp = "";
         const url = "http://localhost:8080/user_hits/" + username;
         resp = JSON.parse(httpGet(url));
-        var hitList=[];
         var xValues = [],
             yValues = [],
             isInArea = [];
@@ -179,20 +215,13 @@ class Main extends Component {
             tmp.x = ad.x;
             tmp.y = ad.y;
             tmp.r = ad.r;
-            tmp.isInArea = ad.answer;
+            tmp.isInArea = ad.answer.toString();
             tmp.hitTime = ad.hit_time;
             hitList.push(tmp);
             xValues.push(tmp.x);
             yValues.push(tmp.y);
-            isInArea.push(tmp.isInArea)
+            isInArea.push(ad.answer)
         });
-        dataForTable = "[";
-        hitList.forEach(function (ad) {
-            dataForTable += "{x: "  + ad.x + ", y: " + ad.y + ", r: " + ad.r +
-                ", isInArea: '" + ad.isInArea + "', hitTime: '" + ad.hitTime + "'}, ";
-        });
-        dataForTable = dataForTable.substring(0, dataForTable.length-2) + "]";
-        console.log(dataForTable);
     }
 
     componentDidMount() {
@@ -283,7 +312,7 @@ class Main extends Component {
 
     }
 
-    getData(){
+    getData() {
         return dataForTable;
     }
 
@@ -319,28 +348,14 @@ class Main extends Component {
                     </div>
                     <input id="check" type="submit" value="Check"/>
                 </form>
+                <div id="canvAndTable">
+                    <canvas id="canv" width="300" height="300" onClick={this.canvClick}></canvas>
 
-                <canvas id="canv" width="300" height="300" onClick={this.canvClick}></canvas>
-
-
+                    <DataTable  customTheme={mySweetTheme} columns={columns} data={hitList}/>
+                </div>
                 <form id="logout" onSubmit={this.handleLogOut}>
                     <input type="submit" value="Log Out"/>
                 </form>
-                <div style={{ maxWidth: '80%' }}>
-                    <MaterialTable
-                        columns={[
-                            { title: 'X', field: "x" },
-                            { title: 'Y' , field: "y"},
-                            { title: 'R' , field: "r" },
-                            { title: 'Is In Area' , field: "isInArea"},
-                            { title: 'Time', field:  "hitTime"}
-                        ]}
-                        // data={[{ name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 }]}
-                        // data={[{x: 0.7, y: -0.66, r: 2, isInArea: 'true', hitTime: '2019-03-19 02:16:26.916'}]}
-                        data={this.getData()}
-                        title="Hits"
-                    />
-                </div>
 
                 <h3 id="pc">PC</h3>
                 <h3 id="tablet">TABLET</h3>
@@ -400,7 +415,7 @@ function updateChart(R) {
     var resp = "";
     const url = "http://localhost:8080/user_hits/" + username;
     resp = JSON.parse(httpGet(url));
-    var hitList=[];
+    var hitList = [];
     var xValues = [],
         yValues = [],
         isInArea = [];
@@ -415,15 +430,8 @@ function updateChart(R) {
         hitList.push(tmp);
         xValues.push(tmp.x);
         yValues.push(tmp.y);
-        isInArea.push(tmp.isInArea)
+        isInArea.push(ad.answer);
     });
-    dataForTable = "[";
-    hitList.forEach(function (ad) {
-        dataForTable += "{x: "  + ad.x + ", y: " + ad.y + ", r: " + ad.r +
-            ", isInArea: '" + ad.isInArea + "', hitTime: '" + ad.hitTime + "'}, ";
-    });
-    dataForTable =dataForTable.substring(0, dataForTable.length-2) + "]";
-    console.log(dataForTable.toLocaleString());
     //table
     drawArea(R, ctx, canv);
     drawAxis(ctx);
@@ -441,7 +449,7 @@ function drawArea(R, ctx, canv) {
     ctx.beginPath()
     ctx.moveTo(canv.width / 2, canv.height / 2);                                 ////////////// -1
     // ctx.arc(canv.width / 2, canv.height / 2 - 1, R * 20, Math.PI, Math.PI * 3 / 2, false);
-    ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 20, 0, Math.PI  / 2, false);
+    ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 20, 0, Math.PI / 2, false);
 
     ctx.closePath();
     ctx.fill();
@@ -463,7 +471,6 @@ function drawArea(R, ctx, canv) {
 function drawPreviousHits(xValues, yValues, isInArea, ctx) {
     for (var i = 0; i < xValues.length; ++i) {
         var str = isInArea[i];
-        // str = str.trim(" ");
         if (str == true) {
             ctx.fillStyle = "#11FF00";
         } else {
@@ -557,7 +564,6 @@ function clearChart(ctx, canv) {
     drawXValues(ctx);
     drawYValues(ctx);
 }
-
 
 
 export default App;
