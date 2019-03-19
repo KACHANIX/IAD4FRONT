@@ -95,7 +95,7 @@
         display: none;
     }
 
-    #mainform{
+    #mainform {
         padding-top: 150px;
     }
 
@@ -187,6 +187,7 @@
         color: red;
         display: none;
     }
+
     .xbtn {
         height: 30px;
         margin-top: 25px;
@@ -275,7 +276,7 @@
         display: none;
     }
 
-    #mainform{
+    #mainform {
         margin: 20px auto;
         height: 260px;
         width: 80%;
@@ -284,28 +285,49 @@
         text-align: center;
 
     }
-    .xbtn{
-        margin:0 5px;
+
+    .xbtn {
+        margin: 0 5px;
     }
-    .rbtn{
-        margin:0 10px;
+
+    .rbtn {
+        margin: 0 10px;
     }
-    #buttonblockX{
+
+    #buttonblockX {
         margin: 10px auto;
         width: 100%;
     }
-    #spinnerBlock{
+
+    #spinnerBlock {
 
     }
-    #buttonblockR{
+
+    #buttonblockR {
 
     }
-    p{
+
+    p {
         margin: 5px auto;
     }
-    canvas{
+
+    canvas {
         border: 2px solid red;
         border-radius: 20px;
+    }
+
+    #table {
+        width: 400px;
+        height: 200px;
+        overflow: auto;
+    }
+
+    .sc-chPdSV {
+        display: none !important;
+    }
+
+    .cOaGrx {
+        display: none !important;
     }
 
 }

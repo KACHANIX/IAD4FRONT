@@ -158,32 +158,32 @@ const columns = [
         name: 'X',
         selector: 'x',
         sortable: true,
-        width: '80px'
+        width: '16%'
     },
     {
         name: 'Y',
         selector: 'y',
         sortable: true,
-        width: '80px'
+        width: '16%'
     },
     {
         name: 'R',
         selector: 'r',
         sortable: true,
 
-        width: '80px'
+        width: '9%'
     },
     {
         name: 'Is In Area',
         selector: 'isInArea',
         sortable: false,
-        width: '80px'
+        width: '13%'
     },
     {
         name: 'Hit Time',
         selector: 'hitTime',
         sortable: false,
-        width: '180px'
+        width: '43%'
     },
 ];
 const mySweetTheme = {
@@ -191,6 +191,7 @@ const mySweetTheme = {
         height: '30px',
     }
 };
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -289,7 +290,7 @@ class Main extends Component {
         this.state.x = Math.round((x1 - 150) / 20 * 100) / 100;
         document.getElementById("yInput").value = this.state.y;
         this.handleSubmit(document.createEvent('Event'));
-
+        this.state.x = "";
     }
 
     handleSubmit(e) {
@@ -350,8 +351,9 @@ class Main extends Component {
                 </form>
                 <div id="canvAndTable">
                     <canvas id="canv" width="300" height="300" onClick={this.canvClick}></canvas>
-
-                    <DataTable  customTheme={mySweetTheme} columns={columns} data={hitList}/>
+                    <div id="table">
+                        <DataTable customTheme={mySweetTheme} columns={columns} data={hitList}/>
+                    </div>
                 </div>
                 <form id="logout" onSubmit={this.handleLogOut}>
                     <input type="submit" value="Log Out"/>
@@ -426,7 +428,7 @@ function updateChart(R) {
         tmp.y = ad.y;
         tmp.r = ad.r;
         tmp.isInArea = ad.answer;
-        tmp.hitTime = ad.hit_time;
+        tmp.hitTime = ad.hit_time.substring(0, ad.hit_time.indexOf('.'));
         hitList.push(tmp);
         xValues.push(tmp.x);
         yValues.push(tmp.y);
