@@ -96,7 +96,7 @@
     }
 
     #mf {
-        padding-top: 100px;
+        padding-top: 80px;
 
     }
 
@@ -104,7 +104,7 @@
         /*margin: 20px auto;*/
         float: left;
         margin-left: 50px;
-        height: 400px;
+        height: 380px;
         width: 400px;
         border: 2px solid #1E90FF;
         text-align: center;
@@ -159,7 +159,7 @@
     #tableContainer {
 
         margin-right: 50px;
-        margin-top: 130px;
+        margin-top: 100px;
         float: right;
         width: 430px;
         height: 300px;

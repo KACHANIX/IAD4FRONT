@@ -9,81 +9,86 @@ import DataTable from 'react-data-table-component';
 import ReactDOM from 'react-dom';
 
 
+
+var username="";
+var password="";
+
 //redirecting
-var matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-));
-var a = matches ? decodeURIComponent(matches[1]) : undefined;
-if ((a === "" || a === undefined) && window.location != "http://localhost:3000/enter") {
-    window.location.replace("http://localhost:3000/enter");
-} else if ((a === "" || a === undefined) && window.location == "http://localhost:3000/enter") {
-} else if (window.location == "http://localhost:3000/") {
-    var index = a.indexOf("▲▲");
-    var username = a.substr(0, index);
-    var password = a.substr(index + 2);
+// var matches = document.cookie.match(new RegExp(
+//     "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+// ));
+// var a = matches ? decodeURIComponent(matches[1]) : undefined;
+// if ((a === "" || a === undefined) && window.location != "http://localhost:3000/enter") {
+//     window.location.replace("http://localhost:3000/enter");
+// } else if ((a === "" || a === undefined) && window.location == "http://localhost:3000/enter") {
+// } else if (window.location == "http://localhost:3000/") {
+//     var index = a.indexOf("▲▲");
+//     var username = a.substr(0, index);
+//     var password = a.substr(index + 2);
+//
+//
+//     const url = "http://localhost:8080/check_user";
+//     const data = JSON.stringify({"username": username, "password": password});
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+//     xhr.onreadystatechange = function () {
+//         if (xhr.readyState === 4 && xhr.status === 200) {
+//             var response = xhr.responseText;
+//             if (response !== 'true') {
+//                 window.location.replace("http://localhost:3000/enter");
+//             } else {
+//                 window.location.replace("http://localhost:3000/main");
+//             }
+//         }
+//     };
+//     xhr.send(data);
+// } else if (window.location == "http://localhost:3000/main") {
+//     var index = a.indexOf("▲▲");
+//     var username = a.substr(0, index);
+//     var password = a.substr(index + 2);
+//     const url = "http://localhost:8080/check_user";
+//     const data = JSON.stringify({"username": username, "password": password});
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+//     xhr.onreadystatechange = function () {
+//         if (xhr.readyState === 4 && xhr.status === 200) {
+//             var response = xhr.responseText;
+//             if (response !== 'true') {
+//                 window.location.replace("http://localhost:3000/enter");
+//             }
+//         }
+//         ;
+//     }
+//     xhr.send(data);
+// } else if (window.location == "http://localhost:3000/enter" || window.location == "http://localhost:3000/enter/login"
+//     || window.location == "http://localhost:3000/enter/signup") {
+//     var index = a.indexOf("▲▲");
+//     var username = a.substr(0, index);
+//     var password = a.substr(index + 2);
+//
+//
+//     const url = "http://localhost:8080/check_user";
+//     const data = JSON.stringify({"username": username, "password": password});
+//     var xhr = new XMLHttpRequest();
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+//     xhr.onreadystatechange = function () {
+//         if (xhr.readyState === 4 && xhr.status === 200) {
+//             var response = xhr.responseText;
+//             if (response === 'true') {
+//                 window.location.replace("http://localhost:3000/main");
+//             }
+//         }
+//         ;
+//     }
+//
+//     xhr.send(data);
+// }
 
 
-    const url = "http://localhost:8080/check_user";
-    const data = JSON.stringify({"username": username, "password": password});
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = xhr.responseText;
-            if (response !== 'true') {
-                window.location.replace("http://localhost:3000/enter");
-            } else {
-                window.location.replace("http://localhost:3000/main");
-            }
-        }
-    };
-    xhr.send(data);
-} else if (window.location == "http://localhost:3000/main") {
-    var index = a.indexOf("▲▲");
-    var username = a.substr(0, index);
-    var password = a.substr(index + 2);
-    const url = "http://localhost:8080/check_user";
-    const data = JSON.stringify({"username": username, "password": password});
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = xhr.responseText;
-            if (response !== 'true') {
-                window.location.replace("http://localhost:3000/enter");
-            }
-        }
-        ;
-    }
-    xhr.send(data);
-} else if (window.location == "http://localhost:3000/enter" || window.location == "http://localhost:3000/enter/login"
-    || window.location == "http://localhost:3000/enter/signup") {
-    var index = a.indexOf("▲▲");
-    var username = a.substr(0, index);
-    var password = a.substr(index + 2);
-
-
-    const url = "http://localhost:8080/check_user";
-    const data = JSON.stringify({"username": username, "password": password});
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = xhr.responseText;
-            if (response === 'true') {
-                window.location.replace("http://localhost:3000/main");
-            }
-        }
-        ;
-    }
-
-    xhr.send(data);
-}
-
-
+var index;
 function clearxBorder() {
     var elements = document.getElementsByClassName("xbtn");
     for (index = 0; index < elements.length; index++) {
@@ -119,7 +124,40 @@ var style = {
     margin: 0
 }
 
-class All extends Component {
+class Enter extends Component {
+    constructor() {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        var a = matches ? decodeURIComponent(matches[1]) : undefined;
+
+        if (a !== undefined) {
+            var index = a.indexOf("▲▲");
+             username = a.substr(0, index);
+             password = a.substr(index + 2);
+
+
+            const url = "http://localhost:8080/check_user";
+            const data = JSON.stringify({"username": username, "password": password});
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, false);
+            xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    if (response === 'true') {
+                        window.location.replace("http://localhost:3000/main");
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
+        super();
+
+
+    }
+
     render() {
         return (
             <div style={style}>
@@ -195,7 +233,40 @@ const mySweetTheme = {
 
 class Main extends Component {
     constructor(props) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        var a = matches ? decodeURIComponent(matches[1]) : undefined;
+
+        if (a === undefined){
+            window.location.replace("http://localhost:3000/enter");
+        }
+        if (a !== undefined) {
+            var index = a.indexOf("▲▲");
+            username = a.substr(0, index);
+            password = a.substr(index + 2);
+
+
+            let url = "http://localhost:8080/check_user";
+            const data = JSON.stringify({"username": username, "password": password});
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    if (response === 'false') {
+                        window.location.replace("http://localhost:3000/enter");
+                    }
+                }
+            };
+            xhr.send(data);
+        }
+
         super(props);
+
+
+
         this.handleLogOut = this.handleLogOut.bind(this);
         this.xClick = this.xClick.bind(this);
         this.ySpin = this.ySpin.bind(this)
@@ -206,7 +277,7 @@ class Main extends Component {
         this.getData = this.getData.bind(this);
 
         var resp = "";
-        const url = "http://localhost:8080/user_hits/" + username;
+        var url = "http://localhost:8080/user_hits/" + username;
         resp = JSON.parse(httpGet(url));
         var xValues = [],
             yValues = [],
@@ -382,7 +453,8 @@ class App extends Component {
                 <div id="container">
                     <Router>
                         <div style={style}>
-                            <Route path="/enter" component={All}/>
+                            {/*<Route path="/" component={Enter}/>*/}
+                            <Route path="/enter" component={Enter}/>
                             <Route path="/main" component={Main}/>
                         </div>
                     </Router>
