@@ -6,6 +6,8 @@ import LogInForm from './logInForm.js';
 import SignUpForm from './signUpForm.js';
 import '../js/chart';
 import {$, jQuery} from 'jquery';
+import MaterialTable from 'material-table';
+
 
 
 //redirecting
@@ -150,6 +152,7 @@ function httpGet(theUrl)
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
+var dataForTable;
 
 class Main extends Component {
     constructor(props) {
@@ -161,8 +164,35 @@ class Main extends Component {
         this.rClick = this.rClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.canvClick = this.canvClick.bind(this);
+        this.getData = this.getData.bind(this);
 
+        var resp = "";
+        const url = "http://localhost:8080/user_hits/" + username;
+        resp = JSON.parse(httpGet(url));
+        var hitList=[];
+        var xValues = [],
+            yValues = [],
+            isInArea = [];
 
+        resp.forEach(function (ad) {
+            var tmp = new Object();
+            tmp.x = ad.x;
+            tmp.y = ad.y;
+            tmp.r = ad.r;
+            tmp.isInArea = ad.answer;
+            tmp.hitTime = ad.hit_time;
+            hitList.push(tmp);
+            xValues.push(tmp.x);
+            yValues.push(tmp.y);
+            isInArea.push(tmp.isInArea)
+        });
+        dataForTable = "[";
+        hitList.forEach(function (ad) {
+            dataForTable += "{x: "  + ad.x + ", y: " + ad.y + ", r: " + ad.r +
+                ", isInArea: '" + ad.isInArea + "', hitTime: '" + ad.hitTime + "'}, ";
+        });
+        dataForTable = dataForTable.substring(0, dataForTable.length-2) + "]";
+        console.log(dataForTable);
     }
 
     componentDidMount() {
@@ -173,7 +203,8 @@ class Main extends Component {
         var
             canv = document.getElementById("canv"),
             ctx = canv.getContext('2d');
-        updateChart()
+        updateChart();
+
 
     }
 
@@ -227,11 +258,8 @@ class Main extends Component {
         ctx.fill();
         this.state.y = Math.round((150 - y1) / 20 * 100) / 100;
         this.state.x = Math.round((x1 - 150) / 20 * 100) / 100;
-        // alert(this.state.x + "    " + this.state.y);
-        // updateChart(this.state.r);
         document.getElementById("yInput").value = this.state.y;
         this.handleSubmit(document.createEvent('Event'));
-        // document.getElementById("#check").click();
 
     }
 
@@ -249,20 +277,14 @@ class Main extends Component {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, false);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-        // xhr.onreadystatechange = function () {
-        //     if (xhr.readyState === 4 && xhr.status === 200) {
-        //         var response = xhr.responseText;
-        //         if (response === 'true') {
-        //             window.location.replace("http://localhost:3000/main");
-        //         }
-        //     }
-        //     ;
-        // }
-
         xhr.send(data);
 
         updateChart(this.state.r)
 
+    }
+
+    getData(){
+        return dataForTable;
     }
 
     render() {
@@ -304,7 +326,21 @@ class Main extends Component {
                 <form id="logout" onSubmit={this.handleLogOut}>
                     <input type="submit" value="Log Out"/>
                 </form>
-
+                <div style={{ maxWidth: '80%' }}>
+                    <MaterialTable
+                        columns={[
+                            { title: 'X', field: "x" },
+                            { title: 'Y' , field: "y"},
+                            { title: 'R' , field: "r" },
+                            { title: 'Is In Area' , field: "isInArea"},
+                            { title: 'Time', field:  "hitTime"}
+                        ]}
+                        // data={[{ name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 }]}
+                        // data={[{x: 0.7, y: -0.66, r: 2, isInArea: 'true', hitTime: '2019-03-19 02:16:26.916'}]}
+                        data={this.getData()}
+                        title="Hits"
+                    />
+                </div>
 
                 <h3 id="pc">PC</h3>
                 <h3 id="tablet">TABLET</h3>
@@ -313,6 +349,7 @@ class Main extends Component {
         );
     }
 }
+
 
 class App extends Component {
     render() {
@@ -360,24 +397,15 @@ function updateChart(R) {
         canv = document.getElementById("canv"),
         ctx = canv.getContext('2d');
 
-
-    var xValues = [],
-        yValues = [],
-        isInArea = [];
-
     var resp = "";
     const url = "http://localhost:8080/user_hits/" + username;
     resp = JSON.parse(httpGet(url));
     var hitList=[];
-    //
-    // alert(hitList[1].id);
-
     var xValues = [],
         yValues = [],
         isInArea = [];
 
     resp.forEach(function (ad) {
-        // alert(ad.answer);
         var tmp = new Object();
         tmp.x = ad.x;
         tmp.y = ad.y;
@@ -389,6 +417,13 @@ function updateChart(R) {
         yValues.push(tmp.y);
         isInArea.push(tmp.isInArea)
     });
+    dataForTable = "[";
+    hitList.forEach(function (ad) {
+        dataForTable += "{x: "  + ad.x + ", y: " + ad.y + ", r: " + ad.r +
+            ", isInArea: '" + ad.isInArea + "', hitTime: '" + ad.hitTime + "'}, ";
+    });
+    dataForTable =dataForTable.substring(0, dataForTable.length-2) + "]";
+    console.log(dataForTable.toLocaleString());
     //table
     drawArea(R, ctx, canv);
     drawAxis(ctx);
@@ -522,6 +557,7 @@ function clearChart(ctx, canv) {
     drawXValues(ctx);
     drawYValues(ctx);
 }
+
 
 
 export default App;
