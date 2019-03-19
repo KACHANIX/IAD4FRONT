@@ -312,14 +312,21 @@
     }
 
     canvas {
+        margin: auto;
         border: 2px solid red;
         border-radius: 20px;
     }
+    #canvAndTable{
+        text-align: center;
+    }
 
     #table {
+        margin: 5px auto;
         width: 400px;
         height: 200px;
         overflow: auto;
+
+        border: 2px solid red;
     }
 
     .sc-chPdSV {
@@ -328,6 +335,10 @@
 
     .cOaGrx {
         display: none !important;
+    }
+
+    #logout{
+        text-align: center;
     }
 
 }

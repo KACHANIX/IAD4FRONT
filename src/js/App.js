@@ -6,6 +6,8 @@ import LogInForm from './logInForm.js';
 import SignUpForm from './signUpForm.js';
 import '../js/chart';
 import DataTable from 'react-data-table-component';
+import ReactDOM from 'react-dom';
+
 
 
 //redirecting
@@ -183,7 +185,7 @@ const columns = [
         name: 'Hit Time',
         selector: 'hitTime',
         sortable: false,
-        width: '43%'
+        width: '40%'
     },
 ];
 const mySweetTheme = {
@@ -427,13 +429,16 @@ function updateChart(R) {
         tmp.x = ad.x;
         tmp.y = ad.y;
         tmp.r = ad.r;
-        tmp.isInArea = ad.answer;
+        tmp.isInArea = ad.answer.toString();
         tmp.hitTime = ad.hit_time.substring(0, ad.hit_time.indexOf('.'));
         hitList.push(tmp);
         xValues.push(tmp.x);
         yValues.push(tmp.y);
         isInArea.push(ad.answer);
     });
+    ReactDOM.render(<DataTable customTheme={mySweetTheme} columns={columns} data={hitList}/>,
+        document.getElementById("table")
+    );
     //table
     drawArea(R, ctx, canv);
     drawAxis(ctx);
