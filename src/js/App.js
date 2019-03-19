@@ -177,7 +177,7 @@ const columns = [
         name: 'Is In Area',
         selector: 'isInArea',
         sortable: false,
-        width: '13%'
+        width: '19%'
     },
     {
         name: 'Hit Time',
@@ -217,7 +217,7 @@ class Main extends Component {
             tmp.y = ad.y;
             tmp.r = ad.r;
             tmp.isInArea = ad.answer.toString();
-            tmp.hitTime = ad.hit_time;
+            tmp.hitTime = ad.hit_time.substring(0, ad.hit_time.indexOf('.'));
             hitList.push(tmp);
             xValues.push(tmp.x);
             yValues.push(tmp.y);
