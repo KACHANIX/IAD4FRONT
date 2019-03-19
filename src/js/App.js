@@ -9,7 +9,6 @@ import DataTable from 'react-data-table-component';
 import ReactDOM from 'react-dom';
 
 
-
 //redirecting
 var matches = document.cookie.match(new RegExp(
     "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -299,9 +298,11 @@ class Main extends Component {
         e.preventDefault();
         if (this.state.x == "") {
             viewX();
+            return;
         }
         if (this.state.r == "0.0") {
             viewR();
+            return;
         }
 
         const url = "http://localhost:8080/add_hit/" + username;
@@ -321,7 +322,7 @@ class Main extends Component {
 
     render() {
         return (
-            <div>
+            <div id="mf">
                 <form id="mainform" onSubmit={this.handleSubmit}>
                     <p>X</p>
                     <div id="buttonblockX">
@@ -341,7 +342,7 @@ class Main extends Component {
                         <input id="yInput" type="number" defaultValue={this.state.y}
                                step={0.1} min={-5} max={3} onChange={this.ySpin}/>
                     </div>
-                    <p>R</p>
+                    <p id="rlabel">R</p>
                     <div id="buttonblockR">
                         <input class="rbtn" type="button" label="0.5" value={0.5} onClick={this.rClick}/>
                         <input class="rbtn" type="button" label="1" value={1} onClick={this.rClick}/>
@@ -353,8 +354,10 @@ class Main extends Component {
                 </form>
                 <div id="canvAndTable">
                     <canvas id="canv" width="300" height="300" onClick={this.canvClick}></canvas>
-                    <div id="table">
-                        <DataTable customTheme={mySweetTheme} columns={columns} data={hitList}/>
+                    <div id="tableContainer">
+                        <div id="table">
+                            <DataTable customTheme={mySweetTheme} columns={columns} data={hitList}/>
+                        </div>
                     </div>
                 </div>
                 <form id="logout" onSubmit={this.handleLogOut}>
