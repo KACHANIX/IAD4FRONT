@@ -228,6 +228,7 @@ class Main extends Component {
         clearxBorder();
         hideX();
         hideR();
+        hideY();
         clearrBorder();
         var
             canv = document.getElementById("canv"),
@@ -247,6 +248,7 @@ class Main extends Component {
 
     ySpin(e) {
         e.preventDefault();
+        hideY();
         var a = new Number(e.target.value);
         this.state.y = a;
 
@@ -269,6 +271,9 @@ class Main extends Component {
     }
 
     canvClick(e) {
+        hideY();
+        hideX();
+        hideR();
         var
             canv = document.getElementById("canv"),
             ctx = canv.getContext('2d');
@@ -281,12 +286,26 @@ class Main extends Component {
         var pos = getMousePos(canv, e);
         x1 = pos.x;
         y1 = pos.y;
+
+        if (Math.round((x1 - 150) / 50 * 100) / 100 > 2 ||Math.round((x1 - 150) / 50 * 100) / 100 < -2){
+            viewX();
+            return;
+        }
+
+
+        if (Math.round((150 - y1) / 50 * 100) / 100 > 3 || Math.round((150 - y1) / 20 * 100) / 100 < -5 ){
+            viewY();
+            return;
+        }
+
+
         ctx.fillStyle = "red";
         ctx.beginPath();
         ctx.arc(x1, y1, 1.5, 0, Math.PI * 2);
         ctx.fill();
-        this.state.y = Math.round((150 - y1) / 20 * 100) / 100;
-        this.state.x = Math.round((x1 - 150) / 20 * 100) / 100;
+        this.state.y = Math.round((150 - y1) / 50 * 100) / 100;
+        this.state.x = Math.round((x1 - 150) / 50 * 100) / 100;
+
         document.getElementById("yInput").value = this.state.y;
         this.handleSubmit(document.createEvent('Event'));
         this.state.x = "";
@@ -329,12 +348,13 @@ class Main extends Component {
                         <input class="xbtn" type="button" label="1" value={1} onClick={this.xClick}/>
                         <input class="xbtn" type="button" label="1.5" value={1.5} onClick={this.xClick}/>
                         <input class="xbtn" type="button" label="2" value={2} onClick={this.xClick}/>
-                        <p id="xError">You haven't set the X!</p>
+                        <p id="xError">Wrong input X!</p>
                     </div>
                     <p>Y</p>
                     <div id="spinnerBlock">
                         <input id="yInput" type="number" defaultValue={this.state.y}
                                step={0.1} min={-5} max={3} onChange={this.ySpin}/>
+                        <p style={{visibility: 'invisible'}} id="yError">Wrong input Y!</p>
                     </div>
                     <p id="rlabel">R</p>
                     <div id="buttonblockR">
@@ -366,6 +386,13 @@ class Main extends Component {
     }
 }
 
+function hideY() {
+    document.getElementById("yError").style.visibility = "hidden";
+}
+
+function viewY() {
+    document.getElementById("yError").style.visibility = "visible";
+}
 
 class App extends Component {
     constructor(){
@@ -460,7 +487,7 @@ function drawArea(R, ctx, canv) {
     ctx.beginPath()
     ctx.moveTo(canv.width / 2, canv.height / 2);                                 ////////////// -1
     // ctx.arc(canv.width / 2, canv.height / 2 - 1, R * 20, Math.PI, Math.PI * 3 / 2, false);
-    ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 20, 0, Math.PI / 2, false);
+    ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 50, 0, Math.PI / 2, false);
 
     ctx.closePath();
     ctx.fill();
@@ -469,11 +496,11 @@ function drawArea(R, ctx, canv) {
     ctx.strokeRect(0, 0, 300, 300);
     ctx.fillStyle = "#3399FF";
     // ctx.fillRect(150 + 1, 150 - (R / 2) * 20 - 1, R * 20, (R / 2) * 20); ///////// +1
-    ctx.fillRect(150 + 1 - R / 2 * 20, 150 - (R) * 20 - 1, R / 2 * 20, (R) * 20); ///////// +1
+    ctx.fillRect(150 + 1 - R / 2 * 50, 150 - (R) * 50 - 1, R / 2 * 50, (R) * 50); ///////// +1
     ctx.beginPath();
     ctx.moveTo(150, 150);
-    ctx.lineTo(150, 150 + 2.5 + R * 20);
-    ctx.lineTo(151 - (R / 2) * 20, 150);
+    ctx.lineTo(150, 150 + 2.5 + R * 50);
+    ctx.lineTo(151 - (R / 2) * 50, 150);
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#000";
@@ -488,7 +515,7 @@ function drawPreviousHits(xValues, yValues, isInArea, ctx) {
             ctx.fillStyle = "red";
         }
         ctx.beginPath();
-        ctx.arc(xValues[i] * 20 + 150 + 0.5, 150 - yValues[i] * 20 - 0.5, 2, 0, Math.PI * 2);
+        ctx.arc(xValues[i] * 50 + 150 + 0.5, 150 - yValues[i] * 50 - 0.5, 2, 0, Math.PI * 2);
         ctx.fill();
     }
     ctx.fillStyle = "#000";
@@ -529,13 +556,13 @@ function drawArrows(ctx) {
 }
 
 function drawTips(ctx) {
-    for (var i = 10; i <= 290; i += 20) {
+    for (var i = 0; i <= 250; i += 50) {
         ctx.beginPath();
         ctx.moveTo(i + 0.5, 150 - 3);
         ctx.lineTo(i + 0.5, 150 + 2);
         ctx.stroke();
     }
-    for (var i = 10; i <= 290; i += 20) {
+    for (var i = 0; i <= 250; i += 50) {
         ctx.beginPath();
         ctx.moveTo(148, i - 0.5);
         ctx.lineTo(153, i - 0.5);
@@ -545,23 +572,23 @@ function drawTips(ctx) {
 
 function drawXValues(ctx) {
     ctx.font = "9px Arial";
-    var x = -14;
-    for (var i = -7; i < 0; ++i) {
-        ctx.fillText(i, x += 20, 150 - 3);
+    var x = -4;
+    for (var i = -2; i < 0; ++i) {
+        ctx.fillText(i, x += 50, 150 - 5);
     }
-    x += 22;
-    for (var i = 1; i <= 7; ++i) {
-        ctx.fillText(i, x += 20, 150 - 3);
+    x += 52;
+    for (var i = 1; i <= 2; ++i) {
+        ctx.fillText(i, x += 50, 150 - 5);
     }
 }
 
 function drawYValues(ctx) {
     ctx.font = "9px Arial";
-    var y = -8;
-    for (var i = 7; i >= -7; --i) {
+    var y = 2;
+    for (var i = 2; i >= -2; --i) {
         if (i != 0) {
-            ctx.fillText(i, 154, y += 20);
-        } else y += 20;
+            ctx.fillText(i, 154, y += 50);
+        } else y += 50;
     }
 }
 
