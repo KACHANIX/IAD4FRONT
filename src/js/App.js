@@ -109,7 +109,7 @@ class Enter extends Component {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        var a = matches ? decodeURIComponent(matches[1]) : undefined;
+        var a = matches ? matches[1] : undefined;
 
         if (a !== undefined) {
             var index = a.indexOf("▲▲");
@@ -159,14 +159,14 @@ class Enter extends Component {
 }
 
 class Main extends Component {
-    constructor(props) {
+    constructor() {
 
-        super(props);
+        super();
 
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        var a = matches ? decodeURIComponent(matches[1]) : undefined;
+        var a = matches ? matches[1] : undefined;
 
         if (a === undefined){
             window.location.replace("http://localhost:3000/enter");
