@@ -7,11 +7,32 @@ import SignUpForm from './signUpForm.js';
 import '../js/chart';
 import DataTable from 'react-data-table-component';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
 
 
+const initialState = {
+    username: "",
+    password: ""
+}
 
-var username="";
-var password="";
+function infoReducer(state = initialState, action) {
+    switch (action.type) {
+        case 'setInfo':
+            return Object.assign({}, state,{
+                username: action.username,
+                password: action.password
+            })
+    }
+}
+
+let authInfo = createStore(infoReducer);
+
+// authInfo.subscribe(() => alert(authInfo.getState().username + " " + authInfo.getState().password));
+
+// authInfo.dispatch({type: 'setInfo', username: 'asd', password: 'dsa'});
+//
+
+
 
 var index;
 
@@ -104,36 +125,6 @@ const mySweetTheme = {
 
 class Enter extends Component {
     constructor() {
-
-
-        var matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        var a = matches ? matches[1] : undefined;
-
-        if (a !== undefined) {
-            var index = a.indexOf("▲▲");
-            username = a.substr(0, index);
-            password = a.substr(index + 2);
-
-
-            const url = "http://localhost:8080/check_user";
-            const data = JSON.stringify({"username": username, "password": password});
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, false);
-            xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = xhr.responseText;
-                    if (response === true || response === 'true') {
-                        window.location.replace("http://localhost:3000/main");
-                    }
-                }
-            };
-            xhr.send(data);
-        }
-
-
         super();
     }
 
@@ -162,49 +153,16 @@ class Main extends Component {
     constructor() {
 
         super();
-
-        var matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        var a = matches ? matches[1] : undefined;
-
-        if (a === undefined){
-            window.location.replace("http://localhost:3000/enter");
-        }
-        if (a !== undefined) {
-            var index = a.indexOf("▲▲");
-            username = a.substr(0, index);
-            password = a.substr(index + 2);
-
-
-            let url = "http://localhost:8080/check_user";
-            const data = JSON.stringify({"username": username, "password": password});
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, false);
-            xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = xhr.responseText;
-                    if (response === 'false' || response === false) {
-                        window.location.replace("http://localhost:3000/enter");
-                    }
-                }
-            };
-            xhr.send(data);
-        }
-
-
-
         this.handleLogOut = this.handleLogOut.bind(this);
         this.xClick = this.xClick.bind(this);
-        this.ySpin = this.ySpin.bind(this)
+        this.ySpin = this.ySpin.bind(this);
         this.state = {x: "", y: "0", r: "0.0"};
         this.rClick = this.rClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.canvClick = this.canvClick.bind(this);
 
         var resp = "";
-        var url = "http://localhost:8080/user_hits/" + username;
+        var url = "http://localhost:8080/user_hits/" + authInfo.getState().username;
         resp = JSON.parse(httpGet(url));
         var xValues = [],
             yValues = [],
@@ -274,6 +232,7 @@ class Main extends Component {
         hideY();
         hideX();
         hideR();
+        clearxBorder();
         var
             canv = document.getElementById("canv"),
             ctx = canv.getContext('2d');
@@ -322,7 +281,7 @@ class Main extends Component {
             return;
         }
 
-        const url = "http://localhost:8080/add_hit/" + username;
+        const url = "http://localhost:8080/add_hit/" + authInfo.getState().username;
         const data = JSON.stringify({"x": this.state.x, "y": this.state.y, "r": this.state.r});
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, false);
@@ -377,7 +336,6 @@ class Main extends Component {
                 <form id="logout" onSubmit={this.handleLogOut}>
                     <input type="submit" value="Log Out"/>
                 </form>
-
                 <h3 id="pc">PC</h3>
                 <h3 id="tablet">TABLET</h3>
                 <h3 id="mobile">MOBILE</h3>
@@ -386,25 +344,48 @@ class Main extends Component {
     }
 }
 
-function hideY() {
-    document.getElementById("yError").style.visibility = "hidden";
-}
-
-function viewY() {
-    document.getElementById("yError").style.visibility = "visible";
-}
-
 class App extends Component {
     constructor(){
         super();
-        if (window.location == ("http://localhost:3000/")){
+
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + "nameandpass".replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        var a = matches ? matches[1] : undefined;
+
+        if (a === undefined){
             window.location.replace("http://localhost:3000/enter");
         }
+        if (a !== undefined) {
+            var index = a.indexOf("▲▲");
+            var username = a.substr(0, index);
+            var password = a.substr(index + 2);
+
+
+            let url = "http://localhost:8080/check_user";
+            const data = JSON.stringify({"username": username, "password": password});
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, false);
+            xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    if ((response === 'false' || response === false) && window.location != "http://localhost:3000/enter") {
+                        window.location.replace("http://localhost:3000/enter");
+                    }
+                    else if ((response === 'true' || response === true) && window.location != "http://localhost:3000/main") {
+                        window.location.replace("http://localhost:3000/main");
+                    }
+                }
+            };
+            xhr.send(data);
+            authInfo.dispatch({type: 'setInfo', username: username, password: password});
+        }
+
     }
     render() {
         return (
             <div style={style}>
-
                 <Header/>
                 <div id="container">
                     <Router>
@@ -420,20 +401,22 @@ class App extends Component {
     }
 }
 
-
+function hideY() {
+    document.getElementById("yError").style.visibility = "hidden";
+}
+function viewY() {
+    document.getElementById("yError").style.visibility = "visible";
+}
 function signUp() {
     return (
         <SignUpForm/>
     )
 }
-
 function logIn() {
     return (
         <LogInForm/>
     )
 }
-
-
 function getMousePos(canv, e) {
     var rect = canv.getBoundingClientRect();
     return {
@@ -441,20 +424,17 @@ function getMousePos(canv, e) {
         y: e.clientY - rect.top
     };
 }
-
 function updateChart(R) {
     var
         canv = document.getElementById("canv"),
         ctx = canv.getContext('2d');
-
     var resp = "";
-    const url = "http://localhost:8080/user_hits/" + username;
+    const url = "http://localhost:8080/user_hits/" + authInfo.getState().username;
     resp = JSON.parse(httpGet(url));
     var hitList = [];
     var xValues = [],
         yValues = [],
         isInArea = [];
-
     resp.forEach(function (ad) {
         var tmp = new Object();
         tmp.x = ad.x;
@@ -479,7 +459,6 @@ function updateChart(R) {
     drawYValues(ctx);
     drawPreviousHits(xValues, yValues, isInArea, ctx);
 }
-
 function drawArea(R, ctx, canv) {
     ctx.clearRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = "#3399FF";
@@ -488,7 +467,6 @@ function drawArea(R, ctx, canv) {
     ctx.moveTo(canv.width / 2, canv.height / 2);                                 ////////////// -1
     // ctx.arc(canv.width / 2, canv.height / 2 - 1, R * 20, Math.PI, Math.PI * 3 / 2, false);
     ctx.arc(canv.width / 2, canv.height / 2 - 1, R / 2 * 50, 0, Math.PI / 2, false);
-
     ctx.closePath();
     ctx.fill();
     ctx.fillStyle = "#3399FF";
@@ -505,7 +483,6 @@ function drawArea(R, ctx, canv) {
     ctx.fill();
     ctx.fillStyle = "#000";
 }
-
 function drawPreviousHits(xValues, yValues, isInArea, ctx) {
     for (var i = 0; i < xValues.length; ++i) {
         var str = isInArea[i];
@@ -520,41 +497,34 @@ function drawPreviousHits(xValues, yValues, isInArea, ctx) {
     }
     ctx.fillStyle = "#000";
 }
-
 function drawAxis(ctx) {
     ctx.beginPath();
     ctx.moveTo(150 + 0.5, 0);
     ctx.lineTo(150 + 0.5, 300);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.moveTo(0, 150 - 0.5);
     ctx.lineTo(300, 150 - 0.5);
     ctx.stroke();
 }
-
 function drawArrows(ctx) {
     ctx.beginPath();
     ctx.moveTo(150 + 0.5, 0);
     ctx.lineTo(147 + 0.5, 7);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.moveTo(150 + 0.5, 0);
     ctx.lineTo(153 + 0.5, 7);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.moveTo(300, 150 - 0.5);
     ctx.lineTo(293, 150 - 3.5);
     ctx.stroke();
-
     ctx.beginPath();
     ctx.moveTo(300, 150 - 0.5);
     ctx.lineTo(293, 150 + 2.5);
     ctx.stroke();
 }
-
 function drawTips(ctx) {
     for (var i = 0; i <= 250; i += 50) {
         ctx.beginPath();
@@ -569,7 +539,6 @@ function drawTips(ctx) {
         ctx.stroke();
     }
 }
-
 function drawXValues(ctx) {
     ctx.font = "9px Arial";
     var x = -4;
@@ -581,7 +550,6 @@ function drawXValues(ctx) {
         ctx.fillText(i, x += 50, 150 - 5);
     }
 }
-
 function drawYValues(ctx) {
     ctx.font = "9px Arial";
     var y = 2;
@@ -591,7 +559,6 @@ function drawYValues(ctx) {
         } else y += 50;
     }
 }
-
 function clearChart(ctx, canv) {
     ctx.clearRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = "#000";
@@ -602,6 +569,4 @@ function clearChart(ctx, canv) {
     drawXValues(ctx);
     drawYValues(ctx);
 }
-
-
 export default App;
